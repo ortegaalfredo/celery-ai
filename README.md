@@ -15,6 +15,11 @@ It requires a OpenAI api Key, you can obtain a free evaluation Key from OpenAI b
 1. Run the application: `celery-ai`
 2. press the <Alt>+i key combination in any window or shell. Celery-ai is now recording the prompt. Type your query and press `esc` or `enter` to finalize. Celery-ai will delete the query and replace it with the answer from the selected OpenAI model. Example: <Alt>+i How are you doing? <esc> 
 
+## Demo video
+
+[![Demo Video](http://img.youtube.com/vi/hzAn9Pt_nyo/0.jpg)](https://www.youtube.com/watch?v=hzAn9Pt_nyo "Celery-ai demo")
+
+
 ## Example prompts:
 * 'find all files starting with letter z, in subdirectories, linux command'
 * 'youtube video of python tutorial'
