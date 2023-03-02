@@ -8,7 +8,7 @@ It requires a OpenAI api Key, you can obtain a free evaluation Key from OpenAI b
 
 ## Installation
 
-1. pip install alt-i
+1. pip install celery-ai
 
 ## Usage
 
@@ -17,10 +17,10 @@ It requires a OpenAI api Key, you can obtain a free evaluation Key from OpenAI b
 
 ## Example prompts:
 * 'find all files starting with letter z, in subdirectories, linux command'
-* 'youtube video of python tutoriar'
+* 'youtube video of python tutorial'
 * 'write an example description of a github project in markup language'
 
-Warning: The AI will sometimes write commands and execute them if you ask them to do so.
+Warning: The AI will sometimes write commands and execute them if you query it inside a terminal.
 
 ## License
 

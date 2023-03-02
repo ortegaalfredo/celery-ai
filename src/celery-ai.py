@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import os,openai,argparse,beepy
+import os,openai,argparse
 from pynput import keyboard
 from pynput.keyboard import Key, Controller
 
