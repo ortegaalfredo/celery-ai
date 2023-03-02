@@ -3,7 +3,7 @@ Multiplatform OpenAI keyboard integration
 
 # Description
 
-This is a simple tool that integrates OpenAI ChatGPT and Davinci models by hooking the PC keyboard. It works on Linux, Mac and Windows.
+This is a simple tool that integrates OpenAI ChatGPT and Davinci models by hooking the PC keyboard. It currently works on Linux, Mac and Windows are still buggy.
 It requires a OpenAI api Key, you can obtain a free evaluation Key from OpenAI by registering and then going to the user settings (https://platform.openai.com/account/api-keys)
 
 ## Installation
@@ -13,7 +13,7 @@ It requires a OpenAI api Key, you can obtain a free evaluation Key from OpenAI b
 ## Usage
 
 1. Run the application: `celery-ai`
-2. press the <Alt>+i key combination in any window or shell. Celery-ai is now recording the prompt. Type your query and press `esc` or `enter` to finalize. Celery-ai will delete the query and replace it with the answer from the selected OpenAI model. Example: <Alt>+i How are you doing? <esc> 
+2. press the `Alt`+i key combination in any window or shell. Celery-ai is now recording the prompt. Type your query and press `esc` or `enter` to finalize. Celery-ai will delete the query and replace it with the answer from the selected OpenAI model. Example: `Alt`+i How are you doing? `esc`
 
 ## Demo video
 
