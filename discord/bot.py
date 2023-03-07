@@ -1,6 +1,35 @@
 #
 # Simple discord BOT that receives prompts and return the answer from LLaMA 13B
 #
+"""
+BasedGPT is a bot based on Meta's LLaMA 13B LLM.
+
+Bot code is here: https://github.com/ortegaalfredo/celery-ai/blob/main/discord/bot.py
+
+Accepting pull requests. This is an experiment, after all. 
+Current TODO:
+2) Quantization and distribution, so it can be upgraded to 33B.
+
+
+Instructions: just address the bot with the prompt 
+
+"@BasedGPT blablabla" and wait some seconds for the answer.
+
+For raw prompts (you have to write like continuations I.E. 'The recipe for a cake is') just enter 'raw' at the beggining of the prompt:
+
+"@BasedGPT raw The recipe for a cake is"
+
+Custom parameters
+
+The bot allows the modification of parameters for the query, for that you need to add a json to the beggining of the query in this way:
+
+"@BasedGPT  {"temperature":"0.8", "top_p": 0.9, "max_len":"1000"} How is the day?"
+
+Default values: 
+    temperature: 0.8
+    top_p: 0.95
+    max_len: 400 
+"""
 
 import discord
 from discord.ext import commands
@@ -94,67 +123,37 @@ async def on_ready() -> None:
     print(f"Bot {bot.user} launched.")
     await bot.change_presence(activity=discord.Game(name="global thermonuclear war")) 
 
-
-@bot.command()
-async def raw(ctx,*args):
-    temperature= 0.8
-    top_p= 0.95
-    arguments = ' '.join(args)
-    prompts = [
-        arguments
-    ]
-    print(prompts)
-    results = generator.generate(
-        prompts, max_gen_len=256, temperature=temperature, top_p=top_p
-    )
-
-    local_rank = int(os.environ.get("LOCAL_RANK", -1))
-    if local_rank == 0:
-        return
-
-    for result in results:
-        await ctx.send(result)
-
-@bot.command()
-async def ask(ctx,*args):
-    temperature= 0.8
-    top_p= 0.95
-    arguments = ' '.join(args)
-    arguments='The answer for the question "%s" would be: ' % arguments
-    prompts = [
-        arguments
-    ]
-    print(prompts)
-    results = generator.generate(
-        prompts, max_gen_len=1024, temperature=temperature, top_p=top_p
-    )
-
-    local_rank = int(os.environ.get("LOCAL_RANK", -1))
-    if local_rank == 0:
-        return
-
-    for result in results:
-        await ctx.send(result)
-
-
 @bot.event
 async def on_message(message):
     temperature= 0.9
     top_p= 0.95
+    max_len=400
     if message.author == bot.user:
         return
 
     botid=("<@%d>" % bot.user.id)
     if message.content.startswith(botid):
-        query = message.content.lower()[len(botid):].strip()
-        if (query.startswith('raw ')):
-            query = query[4:]
-        else:
-            query ='The answer for the question "%s" would be: ' % query
+        query = message.content[len(botid):].strip()
+        jsonEnd=query.find('}')
+        if (jsonEnd>0): # json config present, parse
+                config=query[:jsonEnd+1]
+                query=query[jsonEnd+1:].strip()
+                config=json.loads(config)
+                if not (config.get('temperature') is None):
+                    temperature=float(config['temperature'])
+                if not (config.get('top_p') is None):
+                    top_p=float(config['top_p'])
+                if not (config.get('max_len') is None):
+                    max_len=int(config['max_len'])
+                    if (max_len>1024): max_len=1024
+        if (query.startswith('raw ')): # Raw prompt
+                query = query[4:]
+        else: # Wrap prompt in question
+                query ='The answer for the question "%s" would be: ' % query
         prompts = [query]
         print(prompts)
         results = generator.generate(
-            prompts, max_gen_len=400, temperature=temperature, top_p=top_p
+            prompts, max_gen_len=max_len, temperature=temperature, top_p=top_p
             )
 
         local_rank = int(os.environ.get("LOCAL_RANK", -1))
@@ -171,4 +170,4 @@ async def on_message(message):
 
 
 init()
-bot.run('xxxxxxxxxxxxxxxxxx')
+bot.run('DISCORDKEYHERE')
